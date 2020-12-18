@@ -65,14 +65,11 @@ $(document).ready(function(){
             $('#txtContent').val('');
         }
     });
-    $(document).on('keypress', "#txtContent", function(){
+    $("#txtContent").keypress(function(){
         if(e.keyCode==13){
             $('#btnSend').click();
             $('#txtContent').val('');
         }
-    });
-    $(document).on('keypress', "#txtSearch", function(){
-        socket.emit("client-send-search", $("#txtSearch").val());
     });
     $(document).on("click", "#btnFindfriend", function(){
         socket.emit("client-send-findfriend", $("#txtNumphone").val());
