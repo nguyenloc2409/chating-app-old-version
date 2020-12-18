@@ -261,7 +261,7 @@ io.on("connection", function(socket){
     });
 });
 
-app.get("/", function(req, res){
+app.get("/login", function(req, res){
     res.render("login");
 });
 app.get("/register", function(req, res){
@@ -316,8 +316,13 @@ app.post("/config-login", function(req, res){
     
 });
 
-app.get("/chating", function(req, res){
-    user.findById({_id:usertoancuc}, function(err, result){
-        res.render("test", {user:result});
-    });
+app.get("/", function(req, res){
+    if(usertoancuc == ""){
+        res.writeHead(500, {"Content-Type": "text/html; charset=utf-8"});
+        res.end("<h2>Ban chưa đăng nhập</h2><a href='./login'>Đăng nhập</a>");
+    }else{
+        user.findById({_id:usertoancuc}, function(err, result){
+            res.render("test", {user:result});
+        });
+    }
 });
