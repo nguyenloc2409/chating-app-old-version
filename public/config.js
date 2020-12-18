@@ -58,23 +58,23 @@ var idMe = "";
 
 $(document).ready(function(){
     $(".chat-form").hide();
-    $("#btnSend").click(function(){
+    $(document).on('click', "#btnSend", function(){
         if($("#txtContent").val() != ""){
             socket.emit("user-send-message", {noidung:$('#txtContent').val(), from: idMe, to: idFriend});
             $(".chatlogs").append("<div class='chat self'> <p class='chat-message'>" + $("#txtContent").val() + "</p> </div>");
             $('#txtContent').val('');
         }
     });
-    $('#txtContent').keypress(function(e){
+    $(document).on('keypress', "#txtContent", function(){
         if(e.keyCode==13){
             $('#btnSend').click();
             $('#txtContent').val('');
         }
     });
-    $("#txtSearch").keypress(function(){
+    $(document).on('keypress', "#txtSearch", function(){
         socket.emit("client-send-search", $("#txtSearch").val());
     });
-    $("#btnFindfriend").click(function(){
+    $(document).on("click", "#btnFindfriend", function(){
         socket.emit("client-send-findfriend", $("#txtNumphone").val());
     });
     $(document).on("click", "#btnAddfriend", function(){
