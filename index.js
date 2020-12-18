@@ -278,7 +278,7 @@ app.post("/config-register", function(req, res){
                 if(err){
                     res.send("Tải lên thông tin thất bại.");
                 }else{
-                    res.redirect("./login");
+                    res.redirect("./");
                 }
             });
         }else{
