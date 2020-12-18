@@ -252,7 +252,7 @@ io.on("connection", function(socket){
     });
 });
 
-app.get("/login", function(req, res){
+app.get("/", function(req, res){
     res.render("login");
 });
 app.get("/register", function(req, res){
