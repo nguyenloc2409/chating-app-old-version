@@ -304,7 +304,7 @@ app.post("/config-login", function(req, res){
         function(err, count){
             if(count == 1){
                 user.findOne({userAccount:req.body.txtUsername}, function(err, result){
-                    res.redirect("./chating");
+                    res.redirect("./");
                     usertoancuc = result._id;
                 });
             }else{
