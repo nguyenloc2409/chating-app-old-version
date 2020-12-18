@@ -318,6 +318,6 @@ app.post("/config-login", function(req, res){
 
 app.get("/chating", function(req, res){
     user.findById({_id:usertoancuc}, function(err, result){
-        res.render("test", {user:result}, format="json");
+        res.render("test", {user:result});
     });
 });
