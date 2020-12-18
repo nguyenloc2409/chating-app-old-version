@@ -23,7 +23,7 @@ var session = require('express-session')
 //ket noi thu vien mongoose
 const mongoose = require('mongoose');
 mongoose.connect(
-    'mongodb+srv://locdeptrai:lDFRrYgRHrAmAl7B@cluster0.xgdcr.gcp.mongodb.net/testChating?retryWrites=true&w=majority', 
+    'mongodb+srv://locdeptrai:lDFRrYgRHrAmAl7B@cluster0.xgdcr.gcp.mongodb.net/ChatingApp?retryWrites=true&w=majority', 
     {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false},
     function(err){
         if(!err){
