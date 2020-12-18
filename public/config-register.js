@@ -1,4 +1,4 @@
-var socket = io("https://chatingappcualoc.herokuapp.com/");
+var socket = io("https://chatingappcualoc.herokuapp.com");
 
 socket.on("server-checkuser-daco", function(){
     $("#nhacloi").html("Tài khoản đã có người sử dụng.");
