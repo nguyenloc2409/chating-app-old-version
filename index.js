@@ -51,6 +51,7 @@ const Addfriend = require("./models/addfriend");
 const { now } = require("moment-timezone");
 const Connect = require("./models/connect");
 const { disconnect } = require("process");
+const { format } = require("path");
 var count = User.find();
 
 var mangUsers = [];
@@ -317,6 +318,6 @@ app.post("/config-login", function(req, res){
 
 app.get("/chating", function(req, res){
     user.findById({_id:usertoancuc}, function(err, result){
-        res.render("test", {user:result});
+        res.render("test", {user:result}, format="json");
     });
 });
