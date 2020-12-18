@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xây dựng CSDL cho hệ thống nhắn tin trực tuyến</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./layout.css">
+    <script src="jquery.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="config.js"></script>
+    
+</head>
+<body>
+    <div class="row header-box">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="dropdown">
+                <div class="icon" data-toggle="dropdown">
+                    <i class="fa fa-bell"></i><span class="count-notify">0</span>
+                </div>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item notify-contents">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            
+            <div class="self-info">
+                <div class="dropdown">
+                    <img class="self-avt" src="./background.jpg" alt="avatar" data-toggle="dropdown">
+                    <div class="dropdown-menu">
+                        <div id="<%- user._id %>" class="dropdown-item nameUser" name="selfname"><%- user.userAccount %></div>
+                        <a class="dropdown-item" href="#">Thông tin</a>
+                        <button type="button" class="dropdown-item btnAdd" data-toggle="modal" data-target="#myModal">Thêm bạn</button>
+                        <a class="dropdown-item" href="#">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row all">
+            
+            <div class="col-3 list-friends">
+                <div class="list-box">
+                    <div id="titleUser"><strong>Bạn bè</strong></div>
+                    <div class="list-item">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class=" col-9 chatbox">
+                <div class="title-name-box">
+                    <h3 id='title-name-friend'>...</h3>
+                </div>
+                <div class="chatlogs">
+    
+                    <div class="chat friend"></div>
+                    <div class="chat self"></div>
+                    
+                </div>
+                <div class="chat-form">
+                    <textarea name="" id="txtContent"></textarea>
+                    <button id="btnSend">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="gridSystemModalLabel">Thêm bạn</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-8">
+                      <h5></h5>
+                      <input class="form-control" type="number" id="txtNumphone" name="txtNumphone" placeholder="Nhập số điện thoại"/>
+                  </div>
+                  <div class="col-4">
+                      <h5></h5>
+                      <input class="form-control" type="button" name="btnFindfriend" id="btnFindfriend" value="Tìm"/>
+                  </div>
+              </div>
+            </div>
+            <div class="row" id='boxFriend'>
+                <div class="col-4 avt-user"></div>
+                <div class="col-8 info-user">
+                    
+                </div>
+                
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+</body>
+</html>
