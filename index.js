@@ -32,7 +32,7 @@ var io = require("socket.io")(server, {
     }
   });
 server.listen(process.env.PORT || 4000);
-const io = require("socket.io")(httpServer, {
+const io = require("socket.io")(server, {
     cors: {
       origin: "https://chatingappcualoc.herokuapp.com",
       methods: ["GET", "POST"]
