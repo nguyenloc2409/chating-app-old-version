@@ -324,7 +324,7 @@ app.post("/config-login", function(req, res){
                 });
             }else{
                 res.writeHead(500, {"Content-Type": "text/html; charset=utf-8"});
-                res.end("<h2>Đăng nhập thất bại: Tên đăng nhập/mật khẩu bị sai.</h2><a href='./login'>Quay lại</a>");
+                res.end("<h2>Đăng nhập thất bại: Tên đăng nhập/mật khẩu bị sai.</h2><a href='./'>Quay lại</a>");
             }
         }
     );
