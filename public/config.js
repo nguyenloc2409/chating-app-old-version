@@ -9,6 +9,7 @@ socket.on("server-send-listUser", function(data){
     });
 });
 socket.on("server-send-message", function(data){
+    alert(data.content);
     if(data.idFriend == idFriend)
         $(".chatlogs").append("<div class='chat friend'> <div class='chat-message'>" + data.content + "</div> </div>");
 });
@@ -59,7 +60,7 @@ var idMe = "";
 
 $(document).ready(function(){
     $(".chat-form").hide();
-    $(document).on('click', "#btnSend", function(){
+    $("#btnSend").click(function(){
         if($("#txtContent").val() != ""){
             socket.emit("user-send-message", {noidung:$('#txtContent').val(), from: idMe, to: idFriend});
             $(".chatlogs").append("<div class='chat self'> <p class='chat-message'>" + $("#txtContent").val() + "</p> </div>");
