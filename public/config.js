@@ -9,7 +9,8 @@ socket.on("server-send-listUser", function(data){
     });
 });
 socket.on("server-send-message", function(data){
-    alert(data.content);
+    alert("data: "+data.idTo);
+    alert("client: "+idFriend);
     if(data.idTo == idFriend)
         $(".chatlogs").append("<div class='chat friend'> <div class='chat-message'>" + data.content + "</div> </div>");
 });
