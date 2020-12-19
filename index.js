@@ -234,7 +234,7 @@ io.on("connection", function(socket){
     socket.on("user-send-message", function(data){
         Connect.find({IDusername:data.to}, function(err, res){
             res.forEach(function(i){
-                io.to(i.skID).emit("server-send-message", {idFriend:i.IDusername, content:data.noidung});
+                io.to(i.skID).emit("server-send-message", {idTo:i.IDusername, idFrom: usertoancuc, content:data.noidung});
             });
         });
         var messageMe = new Message({
