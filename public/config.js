@@ -101,4 +101,8 @@ $(document).ready(function(){
         $(".chatlogs").html("");
         socket.emit("client-load-tinnhan", {me:idMe, you:idFriend});
     });
+    
+    $(document).on("click", "#logout", function(){
+        history.back();
+    });
 });
