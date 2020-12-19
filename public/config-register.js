@@ -32,7 +32,7 @@ $(document).ready(function(){
         }
     });
     $("#txtNumtel").focusout(function(){
-        socket.emit("check-sodienthoai", $("#txtNumtel"));
+        socket.emit("check-sodienthoai", $("#txtNumtel").val());
     });
     
 });
