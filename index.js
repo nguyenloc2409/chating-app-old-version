@@ -253,7 +253,7 @@ io.on("connection", function(socket){
     
     var mesOfall = [];
     socket.on("client-load-tinnhan", function(data){
-        idFriend = data.you;
+        idFriend = data.me;
         Message.find({from:data.me,to:data.you}, function(err, me){
             Message.find({from:data.you,to:data.me}, function(err, you){
                 you.forEach(function(f){
