@@ -5,10 +5,10 @@ app.set("views", "./views");
 app.use(express.static("public"));
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", '*');
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+    res.setHeader("Access-Control-Allow-Origin", '*');
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.setHeader("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     next();
 });
 
@@ -20,8 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var md5 = require('md5');
 
 //socket.io
-var server = require("http").Server(app);
-var io = require("socket.io")(server);
+var server = require("http").createServer(handler);
+var io = require("socket.io").listen(server);
 server.listen(process.env.PORT || 4000);
 
 //SESSION
