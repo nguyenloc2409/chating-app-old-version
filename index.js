@@ -210,7 +210,6 @@ io.on("connection", function(socket){
                             user.findOneAndUpdate({userAccount:data.you}, {$push:{userFriends:addfriend._id}}, function(err){});
                         }
                     });
-                    
                 }
             });
         });
@@ -229,12 +228,12 @@ io.on("connection", function(socket){
         });
         
     });
-
+    var idFriend = "";
     //xử lý tin nhắn
     socket.on("user-send-message", function(data){
         Connect.find({IDusername:data.to}, function(err, res){
             res.forEach(function(i){
-                io.to(i.skID).emit("server-send-message", {idTo:i.IDusername, idFrom: usertoancuc, content:data.noidung});
+                io.to(i.skID).emit("server-send-message", {idTo:i.IDusername, idFrom:idFriend, content:data.noidung});
             });
         });
         var messageMe = new Message({
@@ -254,7 +253,7 @@ io.on("connection", function(socket){
     
     var mesOfall = [];
     socket.on("client-load-tinnhan", function(data){
-        
+        idFriend = data.you;
         Message.find({from:data.me,to:data.you}, function(err, me){
             Message.find({from:data.you,to:data.me}, function(err, you){
                 you.forEach(function(f){
