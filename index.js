@@ -55,208 +55,197 @@ const { format } = require("path");
 var count = User.find();
 
 var mangUsers = [];
-io.on("connection", function(socket){
+//socketio client
+var socket = require('socket.io-client')("chatingappcualoc.herokuapp.com");
+socket.on('connect', function(){
     var connect = new Connect({
         skID: socket.id,
         IDusername: usertoancuc,
         connectMoment: Date.now()
     });
     connect.save(function(err){});
-
-    //socket dissconnect
-    socket.on("disconnect", function(){
-        Connect.findOneAndDelete({skID: socket.id}, function(){});
-    });
-    //socket.io của register
-    socket.on("client-check-username", function(data){
-        count.countDocuments({userAccount:data}, function(err, count){
-            
-            if(count != 0){
-                socket.emit("server-checkuser-daco");
-            }else{
-                socket.emit("server-checkuser-chuaco");
-            }
-        });
-    });
-
-    socket.on("logout", function(){
-        mangUsers.splice(
-            mangUsers.indexOf(socket.username), 1
-        );
-        socket.broadcast.emit("server-send-listUser", mangUsers);
-    });
-
-    socket.on("client-send-ketban", function(data){
-        var notify = new Notify({
-            from: data.me,
-            to: data.you,
-            noidung: "Lời mời kết bạn",
-            status: 1,
-            skID: socket.id
-        });
-        notify.save(function(err){
-            if(err){
-                console.log(err);
-            }else{
-                user.findOneAndUpdate({userNumber:data.you}, {$push:{userNotify:notify._id}}, function(err){
-                    socket.emit("ketban-dagui");
-                });
-            }
-        });
-    });
-    
-    
-    socket.on("client-send-findfriend", function(data){
-        if(data/4){
-            user.find({userNumber: data}, function(err, result) {
-                socket.emit("server-send-findyes", result);
-            });
+});
+//socket dissconnect
+socket.on("disconnect", function(){
+    Connect.findOneAndDelete({skID: socket.id}, function(){});
+});
+//socket.io của register
+socket.on("client-check-username", function(data){
+    count.countDocuments({userAccount:data}, function(err, count){
+        
+        if(count != 0){
+            socket.emit("server-checkuser-daco");
         }else{
-            socket.emit("server-send-findno");
+            socket.emit("server-checkuser-chuaco");
         }
-        
     });
+});
 
-    socket.on("client-mo-thongbao", function(data){
+socket.on("logout", function(){
+    mangUsers.splice(
+        mangUsers.indexOf(socket.username), 1
+    );
+    socket.broadcast.emit("server-send-listUser", mangUsers);
+});
 
-        var notify = user.aggregate([{
-            $lookup:{
-                from: "notifies",
-                localField: "userNotify",
-                foreignField: "_id",
-                as: "notify"
-            }
-        }], 
-            function(err, res){
-                res.forEach(function(i){
-                    if(i.userAccount == data){
-                        socket.emit("server-mo-thongbao", i.notify);
-                    }
-                });
-            });
-        
+socket.on("client-send-ketban", function(data){
+    var notify = new Notify({
+        from: data.me,
+        to: data.you,
+        noidung: "Lời mời kết bạn",
+        status: 1,
+        skID: socket.id
     });
-
-    socket.on("chapnhan-ketban", function(data){
-        //console.log(data.me)
-        user.find({userAccount:data.you}, function(err, res){
-            res.forEach(function(i){
-                if(i.userAccount == data.you){
-                    var addfriend = new Addfriend({
-                        AccountSelf: data.me,
-                        AccountFriend: i.userAccount,
-                        IDfriend: i.id,
-                        HoTen: i.userFullname                        
-                    });
-                    addfriend.save(function(err){
-                        if(err){
-                            console.log(err);
-                        }else{
-                            user.findOneAndUpdate({userAccount:data.me}, {$push:{userFriends:addfriend._id}}, function(err){
-                                socket.emit("ketban-thanhcong", {namefriend:addfriend.HoTen, IDfriend:addfriend.IDfriend});
-
-                            });
-                        }
-                    });
-                }
-                var findtoDel = notify.aggregate([{ 
-                    $lookup:{
-                        from: "users",
-                        localField: "_id",
-                        foreignField: "userNotify",
-                        as: "notify"
-                    }
-                }], 
-                function(err,result){
-                    result.forEach(function(x){
-                        user.find({userAccount:data.me}, function(err, res){
-                            res.forEach(function(i){
-                                io.to(x.skID).emit("ketban-thanhcong", {namefriend:i.userFullname, IDfriend:i.id});
-                            });
-                            
-                        });
-                        if(x.from == data.you){
-                            notify.deleteOne({from: x.from}, function(){});
-                        }
-                        if(x.from == data.me){
-                            notify.deleteOne({from: x.from}, function(){});
-                        }
-                    });
-                });
+    notify.save(function(err){
+        if(err){
+            console.log(err);
+        }else{
+            user.findOneAndUpdate({userNumber:data.you}, {$push:{userNotify:notify._id}}, function(err){
+                socket.emit("ketban-dagui");
             });
-        });
-        user.find({userAccount:data.me}, function(err, res){
-            res.forEach(function(i){
-                if(i.userAccount == data.me){
-                    var addfriend = new Addfriend({
-                        AccountSelf: data.you,
-                        AccountFriend: i.userAccount,
-                        IDfriend: i.id,
-                        HoTen: i.userFullname
-                    });
-                    addfriend.save(function(err){
-                        if(err){
-                            console.log(err);
-                        }else{
-                            user.findOneAndUpdate({userAccount:data.you}, {$push:{userFriends:addfriend._id}}, function(err){});
-                        }
-                    });
-                    
-                }
-            });
-        });
-    });
-
-    var nameFriend = User.aggregate([{
-        $lookup:{
-            from: "addfriends",
-            localField: "userFriends",
-            foreignField: "_id",
-            as: "namefriend"
         }
-    }], function(err, res){
-        res.forEach(function(i){
-            socket.emit("server-send-listfriends", {friend:i, id:i._id});
-        });
-        
     });
+});
 
-    //xử lý tin nhắn
-    socket.on("user-send-message", function(data){
-        Connect.find({IDusername:data.to}, function(err, res){
-            res.forEach(function(i){
-                io.to(i.skID).emit("server-send-message", {idFriend:data.to, content:data.noidung});
-            });
+
+socket.on("client-send-findfriend", function(data){
+    if(data/4){
+        user.find({userNumber: data}, function(err, result) {
+            socket.emit("server-send-findyes", result);
         });
-        var messageMe = new Message({
-            from: data.from,
-            to: data.to,
-            content: data.noidung,
-            time: Date.now()
-        });
-        messageMe.save(function(err){
-            if(err)
-                console.log(err);
-            else{
-                user.findOneAndUpdate({_id:messageMe.from}, {$push:{userMessage:messageMe._id}}, function(err){});
-            }
-        });
-    });
+    }else{
+        socket.emit("server-send-findno");
+    }
     
-    var mesOfall = [];
-    socket.on("client-load-tinnhan", function(data){
-        
-        Message.find({from:data.me,to:data.you}, function(err, me){
-            Message.find({from:data.you,to:data.me}, function(err, you){
-                you.forEach(function(f){
-                    mesOfall.push(f)
-                });
-                me.forEach(function(r){
-                    mesOfall.push(r);
-                });
-                socket.emit("server-send-mesOfall", mesOfall.sort());
-                mesOfall = [];
+});
+
+socket.on("client-mo-thongbao", function(data){
+
+    var notify = user.aggregate([{
+        $lookup:{
+            from: "notifies",
+            localField: "userNotify",
+            foreignField: "_id",
+            as: "notify"
+        }
+    }], 
+        function(err, res){
+            res.forEach(function(i){
+                if(i.userAccount == data){
+                    socket.emit("server-mo-thongbao", i.notify);
+                }
             });
+        });
+    
+});
+
+socket.on("chapnhan-ketban", function(data){
+    //console.log(data.me)
+    user.find({userAccount:data.you}, function(err, res){
+        res.forEach(function(i){
+            if(i.userAccount == data.you){
+                var addfriend = new Addfriend({
+                    AccountSelf: data.me,
+                    AccountFriend: i.userAccount,
+                    IDfriend: i.id,
+                    HoTen: i.userFullname                        
+                });
+                addfriend.save(function(err){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        user.findOneAndUpdate({userAccount:data.me}, {$push:{userFriends:addfriend._id}}, function(err){
+                            socket.emit("ketban-thanhcong", {namefriend:addfriend.HoTen, IDfriend:addfriend.IDfriend});
+
+                        });
+                    }
+                });
+            }
+            var findtoDel = notify.aggregate([{ 
+                $lookup:{
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "userNotify",
+                    as: "notify"
+                }
+            }], 
+            function(err,result){
+                result.forEach(function(x){
+                    user.find({userAccount:data.me}, function(err, res){
+                        res.forEach(function(i){
+                            io.to(x.skID).emit("ketban-thanhcong", {namefriend:i.userFullname, IDfriend:i.id});
+                        });
+                        
+                    });
+                    if(x.from == data.you){
+                        notify.deleteOne({from: x.from}, function(){});
+                    }
+                    if(x.from == data.me){
+                        notify.deleteOne({from: x.from}, function(){});
+                    }
+                });
+            });
+        });
+    });
+    user.find({userAccount:data.me}, function(err, res){
+        res.forEach(function(i){
+            if(i.userAccount == data.me){
+                var addfriend = new Addfriend({
+                    AccountSelf: data.you,
+                    AccountFriend: i.userAccount,
+                    IDfriend: i.id,
+                    HoTen: i.userFullname
+                });
+                addfriend.save(function(err){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        user.findOneAndUpdate({userAccount:data.you}, {$push:{userFriends:addfriend._id}}, function(err){});
+                    }
+                });
+                
+            }
+        });
+    });
+});
+
+
+
+//xử lý tin nhắn
+socket.on("user-send-message", function(data){
+    Connect.find({IDusername:data.to}, function(err, res){
+        res.forEach(function(i){
+            io.to(i.skID).emit("server-send-message", {idFriend:data.to, content:data.noidung});
+        });
+    });
+    var messageMe = new Message({
+        from: data.from,
+        to: data.to,
+        content: data.noidung,
+        time: Date.now()
+    });
+    messageMe.save(function(err){
+        if(err)
+            console.log(err);
+        else{
+            user.findOneAndUpdate({_id:messageMe.from}, {$push:{userMessage:messageMe._id}}, function(err){});
+        }
+    });
+});
+
+var mesOfall = [];
+socket.on("client-load-tinnhan", function(data){
+    
+    Message.find({from:data.me,to:data.you}, function(err, me){
+        Message.find({from:data.you,to:data.me}, function(err, you){
+            you.forEach(function(f){
+                mesOfall.push(f)
+            });
+            me.forEach(function(r){
+                mesOfall.push(r);
+            });
+            socket.emit("server-send-mesOfall", mesOfall.sort());
+            mesOfall = [];
         });
     });
 });
@@ -319,5 +308,18 @@ app.post("/config-login", function(req, res){
 app.get("/chating", function(req, res){
     user.findById({_id:usertoancuc}, function(err, result){
         res.render("test", {user:result});
+        var nameFriend = User.aggregate([{
+            $lookup:{
+                from: "addfriends",
+                localField: "userFriends",
+                foreignField: "_id",
+                as: "namefriend"
+            }
+        }], function(err, res){
+            res.forEach(function(i){
+                socket.emit("server-send-listfriends", {friend:i, id:i._id});
+            });
+            
+        });
     });
 });
