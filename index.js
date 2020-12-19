@@ -12,6 +12,10 @@ app.use(function(req, res, next) {
     next();
 });
 
+var cors = require('cors');
+app.use(cors())
+
+
 //body-parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,8 +25,13 @@ var md5 = require('md5');
 
 //socket.io
 var server = require("http").Server(app);
-var io = require("socket.io")(server);
 server.listen(process.env.PORT || 4000);
+const io = require("socket.io")(httpServer, {
+    cors: {
+      origin: "https://chatingappcualoc.herokuapp.com",
+      methods: ["GET", "POST"]
+    }
+  });
 
 //SESSION
 var session = require('express-session')
