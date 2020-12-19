@@ -1,5 +1,5 @@
 //var socket = io();
-var socket = io('https://chatingappcualoc.herokuapp.com', { transport : ['websocket'] });
+var socket = io('https://chatingappcualoc.herokuapp.com');
 
 socket.on("server-send-listUser", function(data){
     $(".list-item").html("");
