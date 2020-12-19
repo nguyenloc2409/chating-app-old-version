@@ -86,6 +86,9 @@ $(document).ready(function(){
     $(document).on('click', '#btnKb', function(){
         socket.emit("chapnhan-ketban", {me:$(".nameUser").text(), you:$(".notify-content").text()});
     });
+    $(document).on("click", "#title-name-friend", function(){
+        alert(idFriend);
+    });
     $(document).on("click", ".name-friend", function(){
         $(".chat-form").show(500);
         //alert($(this).attr('id'));
