@@ -25,6 +25,12 @@ var md5 = require('md5');
 
 //socket.io
 var server = require("http").Server(app);
+var io = require("socket.io")(server, {
+    cors: {
+      origin: "https://chatingappcualoc.herokuapp.com",
+      methods: ["GET", "POST"]
+    }
+  });
 server.listen(process.env.PORT || 4000);
 const io = require("socket.io")(httpServer, {
     cors: {
