@@ -264,11 +264,13 @@ io.on("connection", function(socket){
 
 app.get("/", function(req, res){
     res.render("login");
+    res.setHeader("key", "value");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
 app.get("/register", function(req, res){
     res.render("register")
+    res.setHeader("key", "value");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");    
 });
@@ -325,6 +327,7 @@ app.get("/chating", function(req, res){
     user.findById({_id:usertoancuc}, function(err, result){
         res.render("test", {user:result});
     });
+    res.setHeader("key", "value");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
