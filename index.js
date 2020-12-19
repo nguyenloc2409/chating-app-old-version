@@ -12,6 +12,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+//CORs
 var cors = require('cors');
 app.use(cors())
 
@@ -35,6 +36,15 @@ server.listen(process.env.PORT || 4000);
 //SESSION
 var session = require('express-session')
 
+//send mail
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'locnguyenhuu451@gmail.com',
+      pass: '01664757367'
+    }
+  });
 
 //ket noi thu vien mongoose
 const mongoose = require('mongoose');
@@ -58,7 +68,7 @@ const notify = require("./models/notify");
 const Addfriend = require("./models/addfriend");
 const { now } = require("moment-timezone");
 const Connect = require("./models/connect");
-const { disconnect } = require("process");
+const { disconnect, connected } = require("process");
 const { format } = require("path");
 var count = User.find();
 
@@ -72,6 +82,35 @@ io.on("connection", function(socket){
     });
     connect.save(function(err){});
 
+    //lay lai mat khau
+    socket.on("client-send-checkinfo", function(data){
+        count.countDocuments({userAccount:data.tk, userNumber:data.num}, function(err, res){
+            if(res != 0){
+                socket.emit("info-check-co");
+            }else{
+                socket.emit("info-check-khong");
+            }
+        });
+    });
+    socket.on("client-change-password", function(data){
+        user.findOneAndUpdate({userAccount:data.username}, {userPassword:md5(data.pass)}, function(err){
+            if(err){
+                console.log(err);
+            }else{
+                socket.emit("doimatkhau-thanhcong");
+            }
+        });
+    });
+
+    //kiem tra sdt
+    socket.on("check-sodienthoai", function(data){
+        count.countDocuments({userNumber:data}, function(err, count){
+            if(count != 0)
+                socket.emit("sdt-daco");
+            else
+                socket.emit("sdt-chuaco");
+        });
+    });
     //socket dissconnect
     socket.on("disconnect", function(){
         Connect.findOneAndDelete({skID: socket.id}, function(){});
@@ -228,6 +267,8 @@ io.on("connection", function(socket){
         });
         
     });
+
+    
     var idFriend = "";
     //xử lý tin nhắn
     socket.on("user-send-message", function(data){
@@ -271,15 +312,10 @@ io.on("connection", function(socket){
 
 app.get("/", cors(), function(req, res){
     res.render("login");
-    res.setHeader("key", "value");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
+
 app.get("/register", cors(), function(req, res){
     res.render("register")
-    res.setHeader("key", "value");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");    
 });
 
 app.post("/config-register", function(req, res){
@@ -334,7 +370,8 @@ app.get("/chating", cors(), function(req, res){
     user.findById({_id:usertoancuc}, function(err, result){
         res.render("test", {user:result});
     });
-    res.setHeader("key", "value");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+});
+
+app.get("/laylaimatkhau", cors(), function(req, res){
+    res.render("changePW");
 });

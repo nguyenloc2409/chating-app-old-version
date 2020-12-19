@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
     <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
     <script src="https://chatingappcualoc.herokuapp.com/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="config-login.js"></script>
+    <script src="config-login.js"></script>
 </head>
 <body>
     <div class="container">
@@ -22,15 +22,16 @@
             </div>
                 
             <div class="col-6 form-box">
-                <h2 class="title-login/"> <strong>Đăng nhập</strong> </h2>
-                <form action="./config-login" method="POST">
-                    <input class="form-control" type="text" name="txtUsername" id="txtUsername" placeholder="Tên đăng nhập" required/>
-                    <input class="form-control" type="password" name="txtPassword" id="txtPassword" placeholder="Mật khẩu" required/>
-                    <input class="form-control" type="submit" name="btnLogin" value="Dô" id="btnLogin"/>
-                </form>
+                <h2 class="title-login/"> <strong>Lấy lại mật khẩu</strong> </h2>
+                <div class="ring"></div>
+                <input type="text" class="form-control" id="txtTentaikhoan" placeholder="Nhập tên tài khoản" required>
+                <input type="number" class="form-control" id="txtSodienthoai" placeholder="Nhập SDT" required>
+                <input class="form-control" type="button" value="Kiểm tra" id="btnCheck"/>
+                <input class="form-control" type="password" id="txtNewPassword" placeholder="Nhập mật khẩu mới" required/>
+                <input class="form-control" type="password" id="txtReNewPassword" placeholder="Nhập lại mật khẩu" required/>
+                <input class="form-control" type="button" value="Đổi" id="btnChange"/>
                 <div class="help">
-                    <a href="/register">chưa có tài khoản?</a>
-                    <a href="/laylaimatkhau">quên mật khẩu?</a>
+                    <a href="/">Về trang đăng nhập</a>
                 </div>
             </div>
 

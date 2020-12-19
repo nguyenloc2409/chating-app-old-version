@@ -39,3 +39,9 @@
 #btnLogin:hover{
     background: #5f68e6;
 }
+.ring{
+    font-size: 11px;
+    font-weight: bold;
+    font-style: italic;
+    color: red;
+}
