@@ -331,19 +331,21 @@ app.post("/config-register", function(req, res){
         userMessage: []
     });
 
-    count.countDocuments({userAccount:req.body.txtUsername}, function(err, count){
-        if(count == 0){
-            user.save(function(err){
-                if(err){
-                    res.send("Tải lên thông tin thất bại.");
-                }else{
-                    res.redirect("./");
-                }
-            });
-        }else{
-            res.writeHead(500, {"Content-Type": "text/html; charset=utf-8"});
-            res.end("<h2>Đăng ký thất bại: Tên đăng nhập bị trùng.</h2><a href='./register'>Quay lại</a>");
-        }
+    count.countDocuments({userAccount:req.body.txtUsername}, function(err, countUsername){
+        count.countDocuments({userNumber:req.body.txtNumtel}, function(err, countNum){
+            if(countUsername != 0 || countNum != 0){
+                res.writeHead(500, {"Content-Type": "text/html; charset=utf-8"});
+                res.end("<h2>Đăng ký thất bại: Tên đăng nhập bị trùng.</h2><a href='./register'>Quay lại</a>");
+            }else{
+                user.save(function(err){
+                    if(err){
+                        res.send("Tải lên thông tin thất bại.");
+                    }else{
+                        res.redirect("./");
+                    }
+                });
+            }
+        });
     });
     
 });
