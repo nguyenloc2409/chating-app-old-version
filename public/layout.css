@@ -288,3 +288,7 @@ input{
     background-color: purple;
     color: white;
 }
+.selfInfo{
+    padding-left: 60px;
+    font-size: 16px;
+}

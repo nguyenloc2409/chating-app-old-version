@@ -308,6 +308,21 @@ io.on("connection", function(socket){
             });
         });
     });
+
+    socket.on("thaydoithongtin", function(data){
+        console.log(data);
+        user.findByIdAndUpdate({_id:data.id}, {$set:{
+            userFullname:data.fullname,
+            userBirth:data.birth,
+            userEmail:data.mail
+        }}, function(err){
+            if(err){
+                console.log(err);
+            }else{
+                socket.emit("dadoithongtin");
+            }
+        });
+    });
 });
 
 app.get("/", cors(), function(req, res){
@@ -377,3 +392,4 @@ app.get("/chating", cors(), function(req, res){
 app.get("/laylaimatkhau", cors(), function(req, res){
     res.render("changePW");
 });
+

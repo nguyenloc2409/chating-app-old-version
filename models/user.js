@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     userFullname : String,
     userPassword : String,
     userEmail : String,
-    userBirth : DateOnly,
+    userBirth : {type:Date, default: Date.now()},
     userNumber : String,
     userFriends : [{type: mongoose.Schema.Types.ObjectId}],
     userMessage : [{type: mongoose.Schema.Types.ObjectId}],

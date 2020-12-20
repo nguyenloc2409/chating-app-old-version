@@ -1,5 +1,6 @@
 //var socket = io();
 var socket = io('https://chatingappcualoc.herokuapp.com');
+var socket = io('localhost:4000');
 
 socket.on("server-send-listUser", function(data){
     $(".list-item").html("");
@@ -56,6 +57,10 @@ socket.on("server-send-mesOfall", function(data){
         }
     });
 });
+socket.on("dadoithongtin", function(){
+    alert("Thông tin của bạn đã được đổi, trang sẽ tải lại.");
+    location.reload();
+});
 
 //bien toan cuc
 var idFriend = "";
@@ -107,5 +112,9 @@ $(document).ready(function(){
     
     $(document).on("click", "#logout", function(){
         history.back();
+    });
+
+    $(document).on("click", ".btnchangeInfo", function(){
+        socket.emit("thaydoithongtin", {id:$(this).attr("id"), fullname:$("#txtSelfname").val(), birth:$("#txtSelfbirth").val(), mail:$("#txtSelfmail").val()});
     });
 });

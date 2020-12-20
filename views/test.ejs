@@ -39,7 +39,7 @@
                     <img class="self-avt" src="./background.jpg" alt="avatar" data-toggle="dropdown">
                     <div class="dropdown-menu">
                         <div id="<%- user._id %>" class="dropdown-item nameUser" name="selfname"><%- user.userAccount %></div>
-                        <a class="dropdown-item" href="#">Thông tin</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myInfo">Thông tin</a>
                         <button type="button" class="dropdown-item btnAdd" data-toggle="modal" data-target="#myModal">Thêm bạn</button>
                         <a class="dropdown-item" href="#" id="logout">Đăng xuất</a>
                     </div>
@@ -105,6 +105,42 @@
                 
             </div>
           </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <div class="modal fade" id="myInfo" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="gridSystemModalLabel">Thông tin cá nhân</h4>
+            </div>
+            <div class="modal-body">
+              <div class="container selfInfo">
+                  <div class="Selfname"><%- user.userFullname %></div>
+                  <div class="Selfbirth"><%- user.userBirth %></div>
+                  <div class="Selfmail"><%- user.userEmail %></div>
+              </div>
+              <input class="form-control changeInfo" type="button" value="Thay đổi thông tin" data-toggle="modal" data-target="#changemyInfo">
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <div class="modal fade" id="changemyInfo" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title" id="gridSystemModalLabel">Thay đổi thông tin</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                            <input type="text" class="form-control" id="txtSelfname" placeholder="Họ và tên" value="<%- user.userFullname %>">
+                            <input type="text" class="form-control" id="txtSelfbirth" placeholder="Ngày sinh" value="<%- user.userBirth %>">
+                            <input type="text" class="form-control" id="txtSelfmail" placeholder="Email" value="<%- user.userEmail %>">
+                            <input class="form-control btnchangeInfo" type="button" value="Đổi thông tin cá nhân" id="<%- user._id %>">
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
 </body>
