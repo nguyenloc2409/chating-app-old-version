@@ -10,8 +10,11 @@ socket.on("server-send-listUser", function(data){
 });
 socket.on("server-send-message", function(data){
     
-    if(data.idFrom == idFriend)
+    if(data.idFrom == idFriend){
         $(".chatlogs").append("<div class='chat friend'> <div class='chat-message'>" + data.content + "</div> </div>");
+        window.scrollTo(0,document.body.scrollHeight);
+    }
+        
 });
 
 socket.on("server-send-findyes", function(data){
