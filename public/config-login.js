@@ -1,4 +1,5 @@
 var socket = io('https://chatingappcualoc.herokuapp.com');
+//var socket = io("localhost:4000");
 
 socket.on("info-check-co", function(){
     $("#txtNewPassword").show(500);

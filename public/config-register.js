@@ -1,4 +1,5 @@
 var socket = io('https://chatingappcualoc.herokuapp.com');
+//var socket = io("localhost:4000");
 
 socket.on("server-checkuser-daco", function(){
     $("#nhacloi").html("Tài khoản đã có người sử dụng.");
@@ -11,11 +12,9 @@ socket.on("sdt-daco", function(){
 });
 socket.on("sdt-chuaco", function(){
     $("#nhacloi").html("Số điện thoại có thể sử dụng");
-    $("#btnRegister").show()
 });
 
 $(document).ready(function(){
-    $("#btnRegister").hide()
     $("#txtUsername").focusout(function(){
         if($("#txtUsername").val() == ""){
             $("#nhacloi").html("Không được bỏ trống.");

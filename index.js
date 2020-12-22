@@ -70,6 +70,7 @@ const { now } = require("moment-timezone");
 const Connect = require("./models/connect");
 const { disconnect, connected } = require("process");
 const { format } = require("path");
+const message = require("./models/message");
 var count = User.find();
 
 var mangUsers = [];
@@ -386,3 +387,8 @@ app.get("/laylaimatkhau", cors(), function(req, res){
     res.render("changePW");
 });
 
+app.get("/mohinhcsdl", cors(), function(req, res){
+    user.find({userAccount:"thayducbdu"}, function(err, doc){
+        res.json(doc);
+    });
+});
