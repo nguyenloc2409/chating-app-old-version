@@ -1,6 +1,6 @@
 //var socket = io();
 var socket = io('https://chatingappcualoc.herokuapp.com');
-var socket = io('localhost:4000');
+
 
 socket.on("server-send-listUser", function(data){
     $(".list-item").html("");
@@ -75,7 +75,7 @@ $(document).ready(function(){
             $('#txtContent').val('');
         }
     });
-    $("#txtContent").keypress(function(){
+    $("#txtContent").keypress(function(e){
         if(e.keyCode==13){
             $('#btnSend').click();
             $('#txtContent').val('');

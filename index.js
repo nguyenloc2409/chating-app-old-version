@@ -155,14 +155,9 @@ io.on("connection", function(socket){
     
     
     socket.on("client-send-findfriend", function(data){
-        if(data/4){
-            user.find({userNumber: data}, function(err, result) {
-                socket.emit("server-send-findyes", result);
-            });
-        }else{
-            socket.emit("server-send-findno");
-        }
-        
+        user.find({userNumber: data}, function(err, result) {
+            socket.emit("server-send-findyes", result);
+        });
     });
 
     socket.on("client-mo-thongbao", function(data){
@@ -313,7 +308,6 @@ io.on("connection", function(socket){
         console.log(data);
         user.findByIdAndUpdate({_id:data.id}, {$set:{
             userFullname:data.fullname,
-            userBirth:data.birth,
             userEmail:data.mail
         }}, function(err){
             if(err){
@@ -380,7 +374,6 @@ app.post("/config-login", function(req, res){
             }
         }
     );
-     
 });
 
 app.get("/chating", cors(), function(req, res){
