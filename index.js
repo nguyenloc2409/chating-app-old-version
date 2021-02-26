@@ -429,7 +429,7 @@ app.post("/getMessage", cors(), (req, res) => {
     //let idMe = '5fdd7fb5700c0400241a50b7' ;
     //let idFriend = "5fdd7f74700c0400241a50b3";
     //res.send(req.body)
-    let idMe        = idMe;
+    let idMe        = req.body.idMe;
     let idFriend    = req.body.idFriend;
     Message.find({from:idMe,to:idFriend}, function(err, me){
         Message.find({from:idFriend,to:idMe}, function(err, you){
