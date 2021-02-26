@@ -425,8 +425,8 @@ app.post("/getFriends/:id", (req, res) => {
 var mesOfall = [];
 app.post("/getMessage", cors(), (req, res) => {
     //{idMe:'5fdcac08ab75c00024c17bb0', idFriend:'5fdcab92ab75c00024c17baf'}
-    let idMe = '5fdcac08ab75c00024c17bb0' ;
-    let idFriend = '5fdcab92ab75c00024c17baf';
+    let idMe = '5fdd7fb5700c0400241a50b7' ;
+    let idFriend = "5fdd7f74700c0400241a50b3";
     //let idMe        = req.body.idMe
     //let idFriend    = req.body.idFriend
     Message.find({from:idMe,to:idFriend}, function(err, me){
