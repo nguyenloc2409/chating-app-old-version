@@ -20,6 +20,7 @@ app.use(cors())
 //body-parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //convert to md5
 var md5 = require('md5');
@@ -427,8 +428,8 @@ app.post("/getMessage", cors(), (req, res) => {
     //{idMe:'5fdcac08ab75c00024c17bb0', idFriend:'5fdcab92ab75c00024c17baf'}
     // let idMe = '5fdd7fb5700c0400241a50b7' ;
     // let idFriend = "5fdd7f74700c0400241a50b3";
-    
-    let idMe        = req.body.idMe;
+    res.send(req.body)
+    let idMe        = idMe;
     let idFriend    = req.body.idFriend;
     Message.find({from:idMe,to:idFriend}, function(err, me){
         Message.find({from:idFriend,to:idMe}, function(err, you){
@@ -438,7 +439,7 @@ app.post("/getMessage", cors(), (req, res) => {
             me.forEach(function(r){
                 mesOfall.push(r);
             });
-            res.send(mesOfall.sort());
+            //res.send(mesOfall.sort());
             mesOfall = [];
         });
     });
