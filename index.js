@@ -71,6 +71,7 @@ const Connect = require("./models/connect");
 const { disconnect, connected } = require("process");
 const { format } = require("path");
 const message = require("./models/message");
+const addfriend = require("./models/addfriend");
 var count = User.find();
 
 var mangUsers = [];
@@ -392,3 +393,48 @@ app.get("/mohinhcsdl", cors(), function(req, res){
         res.json(doc);
     });
 });
+
+app.get("/hienthitinnhan", cors(), function(req, res){
+    
+});
+
+//api 
+app.post("/getUser/:id", (req, res) => {
+    let idUser = req.params.id;
+    user.findOne({"_id":idUser}, (err, docs) => {
+        res.send(docs)
+    })
+})
+
+
+var listFriends = [];
+app.post("/getFriends/:id", (req, res) => {
+    let idUser = req.params.id;
+    user.findOne({"_id":idUser}, (err, docs) => {
+        docs.userFriends.map(val => {
+            addfriend.findById({_id:val}, (err, fr) => {
+                user.findOne({_id:fr.IDfriend}, (err, result) => {                    
+                    let infoFriend = {id:result.id, fullname:result.userFullname};
+                    listFriends.push(infoFriend);
+                })
+            })
+        })
+        res.send(listFriends);
+    })
+})
+
+app.post("/getMessage", (req, res) => {
+    idMe        = req.body.idMe;
+    idFriend    = req.body.idFriend
+    Message.find({from:idMe,to:idFriend}, function(err, me){
+        Message.find({from:idFriend,to:idMe}, function(err, you){
+            you.forEach(function(f){
+                mesOfall.push(f)
+            });
+            me.forEach(function(r){
+                mesOfall.push(r);
+            });
+            res.send(mesOfall.sort());
+        });
+    });
+})

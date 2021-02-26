@@ -292,3 +292,9 @@ input{
     padding-left: 60px;
     font-size: 16px;
 }
+.icon-del-friend{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    order: -1;
+}
