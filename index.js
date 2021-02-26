@@ -422,10 +422,11 @@ app.post("/getFriends/:id", (req, res) => {
         res.send(listFriends);
     })
 })
-
+var mesOfall = [];
 app.post("/getMessage", cors(), (req, res) => {
-    idMe        = req.body.idMe;
-    idFriend    = req.body.idFriend
+    //{idMe:'5fdcac08ab75c00024c17bb0', idFriend:'5fdcab92ab75c00024c17baf'}
+    idMe        = '5fdcac08ab75c00024c17bb0';
+    idFriend    = '5fdcab92ab75c00024c17baf'
     Message.find({from:idMe,to:idFriend}, function(err, me){
         Message.find({from:idFriend,to:idMe}, function(err, you){
             you.forEach(function(f){
