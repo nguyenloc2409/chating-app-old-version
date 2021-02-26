@@ -438,6 +438,7 @@ app.post("/getMessage", cors(), (req, res) => {
                 mesOfall.push(r);
             });
             res.send(mesOfall.sort());
+            mesOfall = [];
         });
     });
 })
