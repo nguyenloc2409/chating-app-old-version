@@ -423,7 +423,7 @@ app.post("/getFriends/:id", (req, res) => {
     })
 })
 
-app.post("/getMessage", (req, res) => {
+app.post("/getMessage", cors(), (req, res) => {
     idMe        = req.body.idMe;
     idFriend    = req.body.idFriend
     Message.find({from:idMe,to:idFriend}, function(err, me){
