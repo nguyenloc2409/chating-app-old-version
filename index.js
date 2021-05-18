@@ -416,7 +416,7 @@ app.post("/getFriends/:id", (req, res) => {
             addfriend.findById({_id:val}, (err, fr) => {
                 user.findOne({_id:fr.IDfriend}, (err, result) => {                    
                     let infoFriend = {id:result.id, fullname:result.userFullname};
-                    listFriends.push(infoFriend);
+                    listFriends.push(result);
                 })
             })
         })
