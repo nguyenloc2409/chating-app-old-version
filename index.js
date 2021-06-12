@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 app.set("view engine", "ejs");
 app.set("views", "./views");
+app.set("trust proxy", true);
 app.use(express.static("public"));
 require('dotenv').config();
 
