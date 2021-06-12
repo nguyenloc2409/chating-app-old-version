@@ -3,6 +3,7 @@ var app = express();
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(express.static("public"));
+require('dotenv').config();
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
@@ -19,8 +20,9 @@ app.use(cors())
 
 //body-parser
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use()
 
 //convert to md5
 var md5 = require('md5');
@@ -50,7 +52,7 @@ var transporter = nodemailer.createTransport({
 //ket noi thu vien mongoose
 const mongoose = require('mongoose');
 mongoose.connect(
-    'mongodb+srv://locdeptrai:lDFRrYgRHrAmAl7B@cluster0.xgdcr.gcp.mongodb.net/ChatingApp?retryWrites=true&w=majority', 
+    process.env.DB_CONNECT, 
     {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false},
     function(err){
         if(!err){

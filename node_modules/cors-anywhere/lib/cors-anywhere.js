@@ -53,7 +53,7 @@ function isValidHostName(hostname) {
 function withCORS(headers, request) {
   headers['access-control-allow-origin'] = '*';
   var corsMaxAge = request.corsAnywhereRequestState.corsMaxAge;
-  if (corsMaxAge) {
+  if (request.method === 'OPTIONS' && corsMaxAge) {
     headers['access-control-max-age'] = corsMaxAge;
   }
   if (request.headers['access-control-request-method']) {
@@ -256,6 +256,7 @@ function parseURL(req_url) {
 // Request handler factory
 function getHandler(options, proxy) {
   var corsAnywhere = {
+    handleInitialRequest: null,     // Function that may handle the request instead, by returning a truthy value.
     getProxyForUrl: getProxyForUrl, // Function that specifies the proxy to use
     maxRedirects: 5,                // Maximum number of redirects to be followed.
     originBlacklist: [],            // Requests from these origins will be blocked.
@@ -309,6 +310,10 @@ function getHandler(options, proxy) {
     }
 
     var location = parseURL(req.url.slice(1));
+
+    if (corsAnywhere.handleInitialRequest && corsAnywhere.handleInitialRequest(req, res, location)) {
+      return;
+    }
 
     if (!location) {
       // Invalid API call. Show how to correctly use the API
