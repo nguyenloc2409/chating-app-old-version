@@ -23,7 +23,6 @@ app.use(cors())
 var bodyParser = require('body-parser');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use()
 
 //convert to md5
 var md5 = require('md5');
